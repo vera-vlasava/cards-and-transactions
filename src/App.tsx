@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { getCards, getTransactions } from "../ApiClient";
-import Cards from "./Cards";
-import Transactions from "./Transactions";
-import Loading from "./Loading";
-import { Card, Transaction } from "../ApiClient/index";
-import TransactionsFilter from "./TransactionsFilter";
+import { getCards, getTransactions } from "./ApiClient";
+import Cards from "./components/Cards";
+import Transactions from "./components/Transactions";
+import Loading from "./components/Loading";
+import { Card, Transaction } from "./ApiClient/index";
+import TransactionsFilter from "./components/TransactionsFilter";
 
-const App: React.FC = () => {
+const backGroundStyles: Object = {
+  privat: { backgroundColor: "red" },
+  business: { backgroundColor: "green" },
+};
+
+const App = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const [background, setBackground] = useState<Object>({ backgroundColor: "red" }) 
 
   const [filter, setFilter] = useState<string>("");
 
@@ -26,6 +33,17 @@ const App: React.FC = () => {
     fetchi();
   }, []);
 
+  const clickHandler = (idx: number, style: Object): void => {
+    async function fetchi() {
+      const transactions = await getTransactions(cards[idx].id);
+
+      setTransactions(transactions);
+      setBackground(style)
+    }
+
+    fetchi();
+  };
+
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFilter(event?.target.value);
     getFilteredTransactions(filter);
@@ -38,6 +56,7 @@ const App: React.FC = () => {
   };
 
   const filteredTransactions = getFilteredTransactions(filter);
+  
 
   return (
     <div className="container">
@@ -45,9 +64,9 @@ const App: React.FC = () => {
         <Loading />
       ) : (
         <>
-          <Cards cards={cards} transactions={transactions} />
+          <Cards cards={cards} clickHandler={clickHandler} styles={backGroundStyles}/>
           <TransactionsFilter changeHandler={changeHandler} />
-          <Transactions cards={cards} transactions={filteredTransactions} />
+          <Transactions transactions={filteredTransactions} style={background}/>
         </>
       )}
     </div>

@@ -14,7 +14,7 @@ const InputFilter = styled(InputBase)(({ theme }) => ({
     position: "relative",
     backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
     border: "1px solid #ced4da",
-    fontSize: 14,
+    fontSize: 16,
     color: "gray",
     width: "100%",
     padding: "10px 30px",
@@ -31,6 +31,10 @@ const InputFilter = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+// const Label = styled(InputLabel)() => ({
+
+// })
+
 type Props = {
   changeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -39,7 +43,7 @@ const TransactionsFilter = ({ changeHandler }: Props): React.ReactElement => {
   return (
     <div className="input-wrapper">
       <FormControl fullWidth variant="standard">
-        <InputLabel shrink htmlFor="bootstrap-input">
+        <InputLabel htmlFor="bootstrap-input" sx={{ fontSize: 20 }}>
           Amount Filter
         </InputLabel>
         <InputFilter

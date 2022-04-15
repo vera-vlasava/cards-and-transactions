@@ -1,22 +1,36 @@
 import React, { ReactElement } from "react";
-import { Card, Transaction } from "../ApiClient/index";
+import { Card } from "../ApiClient/index";
 import CardItem from "./CardItem";
-
-
-
-
 
 
 type Props = {
   cards: Card[];
-  transactions: Transaction[];
+  clickHandler: (idx: number, style: Object) => void;
+  styles: Object
 };
 
-const Cards: React.FC<Props> = ({ cards, transactions }) => {
+const Cards = ({ cards, clickHandler, styles }: Props): React.ReactElement => {
   return (
     <div className="card-wrapper">
-      {cards.map((card) => {
-        return <CardItem key={card.id} card={card} />;
+      {cards.map((card, idx) => {
+        let key: keyof typeof styles;
+        let style = {};
+
+        for (key in styles) {
+          if (card.description.toLowerCase().includes(key)) {
+            style = styles[key];
+          } 
+        }
+
+        return (
+          <CardItem
+            key={card.id}
+            card={card}
+            idx={idx}
+            clickHandler={clickHandler}
+            style={style}
+          />
+        );
       })}
     </div>
   );
