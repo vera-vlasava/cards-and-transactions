@@ -3,6 +3,7 @@
 export interface Card {
   id: string;
   description: string;
+  isActive: boolean;
 }
 
 export interface Transaction {
@@ -27,4 +28,3 @@ export async function getTransactions(cardId: string): Promise<Transaction[]> {
 
   throw new Error("cardId not found");
 }
-

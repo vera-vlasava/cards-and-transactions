@@ -7,8 +7,14 @@ import { Card, Transaction } from "./ApiClient/index";
 import TransactionsFilter from "./components/TransactionsFilter";
 
 const backGroundStyles: Object = {
-  privat: { backgroundColor: "red" },
-  business: { backgroundColor: "green" },
+  privat: {
+    backgroundColor: "#0093e9",
+    backgroundImage: "linear-gradient(15deg, #0093e9 0%, #80d0c7 100%)",
+  },
+  business: {
+    backgroundColor: "#D9AFD9",
+    backgroundImage: "linear-gradient(40deg, #D9AFD9 0%, #97D9E1 100%)",
+  },
 };
 
 const App = () => {
@@ -16,7 +22,10 @@ const App = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [background, setBackground] = useState<Object>({ backgroundColor: "red" }) 
+  const [background, setBackground] = useState<Object>({
+    backgroundColor: "#0093e9",
+    backgroundImage: "linear-gradient(15deg, #0093e9 0%, #80d0c7 100%)",
+  });
 
   const [filter, setFilter] = useState<string>("");
 
@@ -33,15 +42,26 @@ const App = () => {
     fetchi();
   }, []);
 
-  const clickHandler = (idx: number, style: Object): void => {
+  const clickHandler = (idx: number, style: Object, id: string): void => {
+    console.log(id);
+
     async function fetchi() {
       const transactions = await getTransactions(cards[idx].id);
 
       setTransactions(transactions);
-      setBackground(style)
+      setBackground(style);
     }
 
     fetchi();
+    const mapedCards = cards.map((card) => {
+      if (card.id === id) {
+        card.isActive = true;
+      } else {
+        card.isActive = false;
+      }
+      return card;
+    });
+    setCards(mapedCards);
   };
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -56,7 +76,6 @@ const App = () => {
   };
 
   const filteredTransactions = getFilteredTransactions(filter);
-  
 
   return (
     <div className="container">
@@ -64,9 +83,16 @@ const App = () => {
         <Loading />
       ) : (
         <>
-          <Cards cards={cards} clickHandler={clickHandler} styles={backGroundStyles}/>
+          <Cards
+            cards={cards}
+            clickHandler={clickHandler}
+            styles={backGroundStyles}
+          />
           <TransactionsFilter changeHandler={changeHandler} />
-          <Transactions transactions={filteredTransactions} style={background}/>
+          <Transactions
+            transactions={filteredTransactions}
+            style={background}
+          />
         </>
       )}
     </div>

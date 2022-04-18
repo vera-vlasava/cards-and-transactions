@@ -2,11 +2,10 @@ import React, { ReactElement } from "react";
 import { Card } from "../ApiClient/index";
 import CardItem from "./CardItem";
 
-
 type Props = {
   cards: Card[];
-  clickHandler: (idx: number, style: Object) => void;
-  styles: Object
+  clickHandler: (idx: number, style: Object, id: string) => void;
+  styles: Object;
 };
 
 const Cards = ({ cards, clickHandler, styles }: Props): React.ReactElement => {
@@ -19,7 +18,7 @@ const Cards = ({ cards, clickHandler, styles }: Props): React.ReactElement => {
         for (key in styles) {
           if (card.description.toLowerCase().includes(key)) {
             style = styles[key];
-          } 
+          }
         }
 
         return (
