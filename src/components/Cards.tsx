@@ -12,9 +12,10 @@ const Cards = ({ cards, clickHandler, styles }: Props): React.ReactElement => {
   return (
     <div className="card-wrapper">
       {cards.map((card, idx) => {
+
+        // Adding dynamically card styles according to card description
         let key: keyof typeof styles;
         let style = {};
-
         for (key in styles) {
           if (card.description.toLowerCase().includes(key)) {
             style = styles[key];

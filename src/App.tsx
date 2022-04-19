@@ -42,7 +42,10 @@ const App = () => {
     fetchi();
   }, []);
 
-  const clickHandler = (idx: number, style: Object, id: string): void => {
+  // Click on card triggers receiving card transactions and
+  // setting background color for transactions the same as
+  // background color of card
+  const setCardTransaction = (idx: number, style: Object, id: string): void => {
     console.log(id);
 
     async function fetchi() {
@@ -64,7 +67,10 @@ const App = () => {
     setCards(mapedCards);
   };
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  // Handling changes in input, getting filter to set corresponding to this filter transactions
+  const setFilteredTransactions = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setFilter(event?.target.value);
     getFilteredTransactions(filter);
   };
@@ -85,10 +91,10 @@ const App = () => {
         <>
           <Cards
             cards={cards}
-            clickHandler={clickHandler}
+            clickHandler={setCardTransaction}
             styles={backGroundStyles}
           />
-          <TransactionsFilter changeHandler={changeHandler} />
+          <TransactionsFilter changeHandler={setFilteredTransactions} />
           <Transactions
             transactions={filteredTransactions}
             style={background}
